@@ -1,0 +1,27 @@
+<div>
+  <h2>Reactive Form</h2>
+  <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
+    <label for="name">Name:</label>
+    <input type="text" id="name" formControlName="name" />
+    <span *ngIf="reactiveForm.get('name')?.invalid && reactiveForm.get('name')?.touched">
+      Name is required.
+    </span>
+    <br />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email" />
+    <span *ngIf="reactiveForm.get('email')?.invalid && reactiveForm.get('email')?.touched">
+      Valid email is required.
+    </span>
+    <br />
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" formControlName="age" />
+    <span *ngIf="reactiveForm.get('age')?.invalid && reactiveForm.get('age')?.touched">
+      Age must be at least 18.
+    </span>
+    <br />
+
+    <button type="submit" [disabled]="reactiveForm.invalid">Submit</button>
+  </form>
+</div>

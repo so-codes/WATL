@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Angular Forms Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simulated Angular Forms</h1>
+
+  <!-- Template-Driven Form -->
+  <h2>Template-Driven Form</h2>
+  <form id="templateForm">
+    <div class="form-group">
+      <label for="templateName">Name:</label>
+      <input type="text" id="templateName" class="form-control" required />
+      <div class="error" id="templateNameError"></div>
+    </div>
+    <div class="form-group">
+      <label for="templateEmail">Email:</label>
+      <input type="email" id="templateEmail" class="form-control" required />
+      <div class="error" id="templateEmailError"></div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <div class="output" id="templateOutput"></div>
+
+  <!-- Reactive Form -->
+  <h2>Reactive Form</h2>
+  <form id="reactiveForm">
+    <div class="form-group">
+      <label for="reactiveName">Name:</label>
+      <input type="text" id="reactiveName" class="form-control" />
+      <div class="error" id="reactiveNameError"></div>
+    </div>
+    <div class="form-group">
+      <label for="reactiveEmail">Email:</label>
+      <input type="email" id="reactiveEmail" class="form-control" />
+      <div class="error" id="reactiveEmailError"></div>
+    </div>
+    <button type="submit" id="reactiveSubmit" disabled>Submit</button>
+  </form>
+  <div class="output" id="reactiveOutput"></div>
+
+  <script>
+    // Template-Driven Form
+    const templateForm = document.getElementById("templateForm");
+    const templateName = document.getElementById("templateName");
+    const templateEmail = document.getElementById("templateEmail");
+    const templateNameError = document.getElementById("templateNameError");
+    const templateEmailError = document.getElementById("templateEmailError");
+    const templateOutput = document.getElementById("templateOutput");
+
+    templateForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      // Validate Name
+      if (templateName.value.trim() === "") {
+        templateNameError.textContent = "Name is required.";
+        valid = false;
+      } else {
+        templateNameError.textContent = "";
+      }
+
+      // Validate Email
+      if (!templateEmail.value.includes("@")) {
+        templateEmailError.textContent = "Valid email is required.";
+        valid = false;
+      } else {
+        templateEmailError.textContent = "";
+      }
+
+      if (valid) {
+        templateOutput.textContent = `Submitted Data: Name: ${templateName.value}, Email: ${templateEmail.value}`;
+      }
+    });
+
+    // Reactive Form
+    const reactiveForm = document.getElementById("reactiveForm");
+    const reactiveName = document.getElementById("reactiveName");
+    const reactiveEmail = document.getElementById("reactiveEmail");
+    const reactiveNameError = document.getElementById("reactiveNameError");
+    const reactiveEmailError = document.getElementById("reactiveEmailError");
+    const reactiveSubmit = document.getElementById("reactiveSubmit");
+    const reactiveOutput = document.getElementById("reactiveOutput");
+
+    const reactiveFormState = {
+      name: "",
+      email: "",
+      isValid: false,
+    };
+
+    const validateReactiveForm = () => {
+      let valid = true;
+
+      // Validate Name
+      if (reactiveName.value.trim() === "") {
+        reactiveNameError.textContent = "Name is required.";
+        valid = false;
+      } else {
+        reactiveNameError.textContent = "";
+      }
+
+      // Validate Email
+      if (!reactiveEmail.value.includes("@")) {
+        reactiveEmailError.textContent = "Valid email is required.";
+        valid = false;
+      } else {
+        reactiveEmailError.textContent = "";
+      }
+
+      reactiveFormState.isValid = valid;
+      reactiveSubmit.disabled = !valid;
+    };
+
+    reactiveName.addEventListener("input", (e) => {
+      reactiveFormState.name = e.target.value;
+      validateReactiveForm();
+    });
+
+    reactiveEmail.addEventListener("input", (e) => {
+      reactiveFormState.email = e.target.value;
+      validateReactiveForm();
+    });
+
+    reactiveForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (reactiveFormState.isValid) {
+        reactiveOutput.textContent = `Submitted Data: Name: ${reactiveFormState.name}, Email: ${reactiveFormState.email}`;
+      }
+    });
+  </script>
+</body>
+</html>
